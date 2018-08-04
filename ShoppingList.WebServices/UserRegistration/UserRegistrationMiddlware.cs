@@ -25,9 +25,9 @@ namespace ShoppingList.WebServices.UserRegistration
                 return;
             }
 
-            var doesUserExist = await userService.DoesUserExistAsync(user.UserPayload.Email);
+            var databaseUser = await userService.GetUserAsync(user.UserPayload.Email);
 
-            if (!doesUserExist)
+            if (databaseUser == null)
             {
                 var newUser = new User
                 {
@@ -38,8 +38,10 @@ namespace ShoppingList.WebServices.UserRegistration
                 };
 
                 await userService.CreateUserAsync(newUser);
+                context.User = new ShoppingListUser { User = newUser };
             }
 
+            context.User = new ShoppingListUser {User = databaseUser};
             await _next(context);
         }
     }

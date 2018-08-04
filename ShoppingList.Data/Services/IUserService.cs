@@ -5,7 +5,7 @@ namespace ShoppingList.Data.Services
 {
     public interface IUserService
     {
-        Task<bool> DoesUserExistAsync(string id);
+        Task<User> GetUserAsync(string id);
         Task<User> CreateUserAsync(User user);
     }
 }

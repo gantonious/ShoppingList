@@ -34,6 +34,7 @@ namespace ShoppingList.WebServices
                 options.UseNpgsql("Host=localhost;Username=postgres;Password=password");
             });
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<GroupService>();
             services.AddMvc();
         }
 

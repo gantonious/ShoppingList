@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ShoppingList.Data.Models
 {
@@ -6,6 +7,7 @@ namespace ShoppingList.Data.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public DateTime CreatedOn { get; set; }
         public List<User> Users { get; set; }
     }
 }

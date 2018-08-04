@@ -15,11 +15,11 @@ namespace ShoppingList.Data.Services
             _context = shoppingListContext;
         }
 
-        public async Task<bool> DoesUserExistAsync(string id)
+        public async Task<User> GetUserAsync(string id)
         {
             return await _context.Users
                 .Where(u => u.Id == id)
-                .AnyAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<User> CreateUserAsync(User user)
