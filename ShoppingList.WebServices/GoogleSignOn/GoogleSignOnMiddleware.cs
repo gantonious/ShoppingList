@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 
 namespace ShoppingList.WebServices.GoogleSignOn
 {
@@ -23,16 +25,21 @@ namespace ShoppingList.WebServices.GoogleSignOn
             {
                 var idToken = GetIdTokenFrom(context);
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
-                if (!IsTokenPayloadValid(payload)) throw new Exception();
+                
+                if (IsTokenPayloadValid(payload))
+                {
+                    context.User = new GoogleUser {UserPayload = payload};
+                    await _next(context);
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch
             {
                 context.Response.StatusCode = 401;
-                return;
             }
-
-  
-            await _next(context);
         }
 
         private static string GetIdTokenFrom(HttpContext context)

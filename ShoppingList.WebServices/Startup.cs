@@ -38,7 +38,10 @@ namespace ShoppingList.WebServices
 
             app.UseGoogleSignOn(new GoogleSignOnOptions
             {
-                ClientIds = new List<string> { "953367067816-nfhh5d7hn4ul77shb2tadec8mjl4489q.apps.googleusercontent.com" }
+                ClientIds = new List<string>
+                {
+                    "953367067816-nfhh5d7hn4ul77shb2tadec8mjl4489q.apps.googleusercontent.com"
+                }
             });
                 
             app.UseMvc();
