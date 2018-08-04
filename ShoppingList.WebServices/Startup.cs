@@ -9,7 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ShoppingList.Data;
+using ShoppingList.Data.Services;
 using ShoppingList.WebServices.GoogleSignOn;
+using ShoppingList.WebServices.UserRegistration;
 
 namespace ShoppingList.WebServices
 {
@@ -24,7 +27,9 @@ namespace ShoppingList.WebServices
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
+        {
+            services.AddDbContext<ShoppingListContext>();
+            services.AddScoped<UserService>();
             services.AddMvc();
         }
 
@@ -43,7 +48,9 @@ namespace ShoppingList.WebServices
                     "953367067816-nfhh5d7hn4ul77shb2tadec8mjl4489q.apps.googleusercontent.com"
                 }
             });
-                
+
+            app.UseMiddleware<UserRegistrationMiddlware>();
+            
             app.UseMvc();
         }
     }
