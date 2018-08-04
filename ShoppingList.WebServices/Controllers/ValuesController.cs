@@ -4,17 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingList.Data;
+using ShoppingList.Data.Models;
 
 namespace ShoppingList.WebServices.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly ShoppingListContext _context;
+        
+        public ValuesController(ShoppingListContext context)
+        {
+            _context = context;
+        }
+        
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
-            return new string[] {"value1", "value2"};
+            return _context.Users;
         }
 
         // GET api/values/5

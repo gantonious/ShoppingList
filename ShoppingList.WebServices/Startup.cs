@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,8 +29,11 @@ namespace ShoppingList.WebServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ShoppingListContext>();
-            services.AddScoped<UserService>();
+            services.AddDbContext<ShoppingListContext>(options =>
+            {
+                options.UseNpgsql("Host=localhost;Username=postgres;Password=password");
+            });
+            services.AddScoped<IUserService, UserService>();
             services.AddMvc();
         }
 
@@ -50,7 +54,6 @@ namespace ShoppingList.WebServices
             });
 
             app.UseMiddleware<UserRegistrationMiddlware>();
-            
             app.UseMvc();
         }
     }

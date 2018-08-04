@@ -9,15 +9,13 @@ namespace ShoppingList.WebServices.UserRegistration
     public class UserRegistrationMiddlware
     {
         private readonly RequestDelegate _next;
-        private readonly UserService _userService;
  
-        public UserRegistrationMiddlware(RequestDelegate next, UserService userService)
+        public UserRegistrationMiddlware(RequestDelegate next)
         {
             _next = next;
-            _userService = userService;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IUserService userService)
         {
             var user = context.User as GoogleUser;
             
@@ -27,7 +25,7 @@ namespace ShoppingList.WebServices.UserRegistration
                 return;
             }
 
-            var doesUserExist = await _userService.DoesUserExistAsync(user.UserPayload.Email);
+            var doesUserExist = await userService.DoesUserExistAsync(user.UserPayload.Email);
 
             if (!doesUserExist)
             {
@@ -39,7 +37,7 @@ namespace ShoppingList.WebServices.UserRegistration
                     ProfileUrl = user.UserPayload.Picture
                 };
 
-                await _userService.CreateUserAsync(newUser);
+                await userService.CreateUserAsync(newUser);
             }
 
             await _next(context);

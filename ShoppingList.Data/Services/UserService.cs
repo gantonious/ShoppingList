@@ -6,7 +6,7 @@ using ShoppingList.Data.Models;
 
 namespace ShoppingList.Data.Services
 {
-    public class UserService
+    public class UserService: IUserService
     {
         private readonly ShoppingListContext _context;
 

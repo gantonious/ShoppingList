@@ -8,9 +8,9 @@ namespace ShoppingList.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ShoppingListContext(DbContextOptions options) : base(options)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Username=postgres;Password=password");
+            
         }
     }
 }
